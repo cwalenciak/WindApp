@@ -33,7 +33,7 @@ eda_data_select_ui <- function(id){
 eda_data_select_server <- function(input, output, session){
     
     reactive({
-        
+    
         if(input$site == "New Jersey"){
             wind_data <- wind_nj
         } else { 
@@ -42,10 +42,10 @@ eda_data_select_server <- function(input, output, session){
         
         # Select Data Interval
         wind_dt <- wind_data[[as.integer(input$interval_select)]]
-        
+
         # Filter data to date range
         wind_dt <- wind_dt[ file_date >= input$dates[1] & file_date <= input$dates[2] ]
-        
+   
         wind_dt
     })
     

@@ -1,5 +1,5 @@
-# setwd('C:/Users/cwale/OneDrive/Desktop/WindApp')
-
+library(here)
+setwd(here())
 
 source('global.R')
 
