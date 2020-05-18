@@ -1,5 +1,6 @@
 library(here)
-setwd(here())
+
+setwd(here::here())
 
 source('global.R')
 
