@@ -28,7 +28,7 @@ fore_model_id_tab_ui <- function(id){
             column(
                 width = 3,
                 actionButton(
-                    "update_aic",
+                    ns("update_button"),
                     "Refresh"
                 )
             )
@@ -37,11 +37,11 @@ fore_model_id_tab_ui <- function(id){
         fluidRow(
             column(
                 width = 6, 
-                DT::DTOutput(ns('aic_table'))
+                DT::DTOutput(ns('aic_table')) %>% withSpinner(color="#0dc5c1")
             ),
             column(
                 width = 6,
-                DT::DTOutput(ns('bic_table'))
+                DT::DTOutput(ns('bic_table')) %>% withSpinner(color="#0dc5c1")
             )
         )
     )
@@ -49,25 +49,36 @@ fore_model_id_tab_ui <- function(id){
 
 fore_model_id_tab_server <- function(input, output, session, dataset){
     
+    upper_bounds <- eventReactive(input$update_button,{
+        c(
+            input$p_upper,
+            input$q_upper
+        )
+    })
+    
     # AIC
     output$aic_table <- DT::renderDT({
+        ub <- upper_bounds()
+        
         aic5.wge(
             dataset(),
             type = "aic", 
-            p = 0:input$p_upper, 
-            q = 0: input$q_upper
+            p = 0:ub[1], 
+            q = 0:ub[2]
         )
     }, options = list(dom = 't'))
     
     # BIC
     output$bic_table <- DT::renderDT({
+        ub <- upper_bounds()
+        
         aic5.wge(
             dataset(),
             type = "bic", 
-            p = 0:input$p_upper, 
-            q = 0: input$q_upper
+            p = 0:ub[1], 
+            q = 0:ub[2]
         )
     }, options = list(dom = 't'))
-    
+
 }
 

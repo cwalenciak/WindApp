@@ -21,7 +21,6 @@ forecast_page <- tabPanel(
                 fore_ase_tab_ui("fore_ase_tab")
             )
         )
-        
     )
 )
 

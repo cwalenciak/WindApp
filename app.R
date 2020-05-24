@@ -1,6 +1,7 @@
 library(here)
 
-setwd(here::here())
+
+setwd("C:/Users/cwale/OneDrive/Documents/WindApp")
 
 source('global.R')
 

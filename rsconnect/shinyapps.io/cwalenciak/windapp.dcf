@@ -5,6 +5,6 @@ account: cwalenciak
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2206761
-bundleId: 3134323
+bundleId: 3159843
 url: https://cwalenciak.shinyapps.io/windapp/
-when: 1589244269.64587
+when: 1589770432.56955

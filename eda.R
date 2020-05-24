@@ -22,7 +22,6 @@ eda_page <- tabPanel(
                     "Windspeed",
                     eda_windspeed_tab_ui("windspeed_tab")
                 )
-                
             )
         )
     )
