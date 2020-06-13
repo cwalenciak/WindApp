@@ -1,7 +1,7 @@
 library(here)
 
 
-setwd("C:/Users/cwale/OneDrive/Documents/WindApp")
+setwd("D:/WindApp")
 
 source('global.R')
 
