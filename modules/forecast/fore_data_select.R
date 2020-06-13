@@ -17,13 +17,13 @@ fore_data_select_ui <- function(id){
             max(file_date_range)
         ),
         
-        numericInput(
-            ns("n_points"),
-            "n points (from end of day):",
-            1440,
-            min = 1,
-            max = 1440
-        ),
+        # numericInput(
+        #     ns("n_points"),
+        #     "n points (from end of day):",
+        #     1440,
+        #     min = 1,
+        #     max = 1440
+        # ),
         
         selectInput(
             ns("interval_select"),
@@ -62,7 +62,7 @@ fore_data_select_server <- function(input, output, session){
     train <- reactive({
         wind_train_day <- wind()[file_date == input$train_day]
         wind_train_day <- wind_train_day[[col()]]
-        wind_train_day[(length(wind_train_day) - input$n_points + 1):length(wind_train_day)]
+        # wind_train_day[(length(wind_train_day) - input$n_points + 1):length(wind_train_day)]
     })
 
     observeEvent(input$interval_select,{
