@@ -116,6 +116,31 @@ create_wind_rose <- function(dt, wind_col, dir_col){
 }
 
 
+# Inputs are vector data
+plot_fore_obs_test <- function(obs_data, fore_data, test_data = NULL){
+
+    obs_seq <- 1:length(obs_data)
+    # fore_seq <- (length(obs_data) + 1):(length(obs_data) + length(fore_data))
+    fore_seq <- (length(obs_data) ):(length(obs_data) + length(fore_data))
+
+    df1 <- data.frame(time = obs_seq, y = obs_data, type = "observations")
+    
+    df2 <- data.frame(time = fore_seq, y =c(tail(obs_data,1), fore_data) , type = "forecast")
+
+    if (is.null(test_data)){
+        df3 <- data.frame()
+    }else{
+        df3 <- data.frame(time = fore_seq, y = test_data, type = "test")
+    }
+
+    df <- rbind(df1, df2, df3)
+    
+    ggplot(df, aes(x = time, y = y, color = type)) + 
+        geom_line() + 
+        scale_colour_manual(values=c(observations='black', test = 'blue' , forecast='red'))
+    
+}
+
 
 
 
