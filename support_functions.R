@@ -120,7 +120,6 @@ create_wind_rose <- function(dt, wind_col, dir_col){
 plot_fore_obs_test <- function(obs_data, fore_data, test_data = NULL){
 
     obs_seq <- 1:length(obs_data)
-    # fore_seq <- (length(obs_data) + 1):(length(obs_data) + length(fore_data))
     fore_seq <- (length(obs_data) ):(length(obs_data) + length(fore_data))
 
     df1 <- data.frame(time = obs_seq, y = obs_data, type = "observations")
