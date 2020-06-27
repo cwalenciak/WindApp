@@ -5,6 +5,7 @@ library(plotly)
 library(shinydashboard)
 library(DT)
 library(shinycssloaders)
+library(vars)
 
 #*******************************************************************
 # Import Data
@@ -64,8 +65,12 @@ time_vect <-c(
     "1 day" = 6
 )
 
-
-
+xreg_vars <- c(
+    "Temperature" = "avg_temp",
+    "Pressure" = "avg_pressure",
+    "Humidty" = "avg_humidity",
+    "Dew Point" = "avg_dew_point"
+)
 
 
 source('support/ui_support.R')
@@ -84,3 +89,10 @@ source("modules/forecast/fore_model_id_tab.R")
 source("modules/forecast/fore_model_est_tab.R")
 source("modules/forecast/fore_forecast_tab.R")
 source("modules/forecast/fore_ase_tab.R")
+
+# VAR MODULES
+source("modules/var/var_data_select.R")
+source("modules/var/var_review_tab.R")
+source("modules/var/var_forecast_tab.R")
+source("modules/var/var_lag_select_tab.R")
+source("modules/var/var_ase_tab.R")

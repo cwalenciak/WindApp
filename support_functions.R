@@ -120,7 +120,7 @@ create_wind_rose <- function(dt, wind_col, dir_col){
 plot_fore_obs_test <- function(obs_data, fore_data, test_data = NULL){
 
     obs_seq <- 1:length(obs_data)
-    fore_seq <- (length(obs_data) ):(length(obs_data) + length(fore_data))
+    fore_seq <- length(obs_data):(length(obs_data) + length(fore_data))
 
     df1 <- data.frame(time = obs_seq, y = obs_data, type = "observations")
     
@@ -129,7 +129,7 @@ plot_fore_obs_test <- function(obs_data, fore_data, test_data = NULL){
     if (is.null(test_data)){
         df3 <- data.frame()
     }else{
-        df3 <- data.frame(time = fore_seq, y = test_data, type = "test")
+        df3 <- data.frame(time = fore_seq, y = c(tail(obs_data, 1), test_data), type = "test")
     }
 
     df <- rbind(df1, df2, df3)
@@ -142,6 +142,123 @@ plot_fore_obs_test <- function(obs_data, fore_data, test_data = NULL){
 
 
 
+arima_windowed_ase <- function(windows, horizon, ts_data, train_size, p, q, d = 0, s = 0){
+    
+    return_list <- list()
+    
+    ase_vect <- c()
+    
+    fore_df <- c()
+    obs_df <- c()
+    test_df <- c()
+    
+    ts1 <- ts_data[1:train_size]
+    ts2 <- ts_data[(train_size + 1):length(ts_data)]
+    
+    for(i in 1:windows){
+        
+        test_data <- ts2[i:(horizon + (i - 1))]
+        
+        temp1 <- tail(ts1, length(ts1) - (i - 1))
+        temp2 <- head(ts2, i - 1)
+        ts <- c(temp1, temp2)
+        
+        ts_dif <- diff(ts, lags = d)
+        
+        ts_est <-
+            est.arma.wge(ts_dif,
+                         p = p,
+                         q = q,
+                         factor = F)
+        
+        ts_fore <-
+            fore.aruma.wge(
+                ts,
+                phi = ts_est$phi,
+                theta = ts_est$theta,
+                d = d,
+                s = s,
+                n.ahead = horizon,
+                limits = F,
+                plot = F
+            )
+        
+        err <- test_data - ts_fore$f
+        ase_vect <- c(ase_vect, mean(err ^ 2))
+        
+        fore_df <- cbind(fore_df, ts_fore$f)
+        obs_df <- cbind(obs_df, ts)
+        test_df <- cbind(test_df, test_data)
+        
+    }
+    
+    colnames(fore_df) <- (1:windows)
+    colnames(obs_df) <- (1:windows)
+    colnames(test_df) <- (1:windows)
+    
+    return(
+        list(
+            mean(ase_vect),
+            fore_df,
+            obs_df,
+            test_df
+        )
+    )
+    
+}
+
+
+#============================
+# WINDOWED ASE FUNCTIONS
+#============================
+
+windowed_ase_plot <- function(test, window_num, horizon, fore_list, f_first, f_last, y_lower, y_upper){
+    
+    plot(
+        x = 1:(window_num + horizon - 1),
+        test[1:(window_num + horizon - 1)],
+        type = "n",
+        ylim = c(y_lower, y_upper),
+        xlim = c(0, (window_num + horizon))
+    )
+    
+    # Forecast
+    for(i in 1:window_num) {
+        lines(
+            x = i:(i + horizon - 1), 
+            y = fore_list[,i], 
+            type = "l", 
+            col = "grey80"
+        )
+    }
+    
+    # Test Data
+    lines(
+        x = 1:(window_num + horizon - 1), 
+        test[1:(window_num + horizon - 1)], 
+        type = "l", 
+        lwd = 3
+    )
+    
+    # First Line
+    lines(
+        x = 1:window_num, 
+        f_first, 
+        col = "blue", 
+        type = "l", 
+        lwd = 2
+    )
+    
+    # Last Line
+    lines(
+        x = horizon:(window_num + horizon -1), 
+        f_last, 
+        col = "red", 
+        type = "l", 
+        lwd = 2
+    )
+    
+}
 
 
 

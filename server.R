@@ -35,7 +35,6 @@ server <- function(input, output){
     # 3: MODEL IDENTIFICATION
     callModule(fore_model_id_tab_server, "fore_model_id_tab", trans_data$data)
     
-    
     # 4: MODEL ESTIMATES
     estimates <- callModule(fore_model_est_tab_server, "fore_model_est_tab", trans_data$data)
     
@@ -59,6 +58,29 @@ server <- function(input, output){
         trans_data$d,
         trans_data$s
     )
+    
+    
+    #*******************************************************************************
+    # VAR PAGE
+    #*******************************************************************************
+    windspeed2 <- callModule(var_data_select_server, "var_data_select")
+    
+    # 1: REVIEW TAB 
+    callModule(var_review_tab_server, "var_review_tab", windspeed2$train_wnd, windspeed2$train_xreg)
+    
+    # 2: LAG SELECTION
+    callModule(var_lag_select_tab_server, "var_lag_select_tab", windspeed2$train_xreg)
+    
+    # 3: FORECAST
+    lags <- callModule(
+        var_forecast_tab_server,
+        "var_forecast_tab",
+        windspeed2$train_wnd,
+        windspeed2$train_xreg
+    )
+    # var_ase_tab_server <- function(input, output, session, train_data, test_data, lags, col){
+    callModule(var_ase_tab_server, "var_ase_tab", windspeed2$train_xreg, windspeed2$test_wnd, lags, "t")
+    
     
 }
 

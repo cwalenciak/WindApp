@@ -1,6 +1,6 @@
 
 forecast_page <- tabPanel(
-    "Forecast",
+    "ARIMA",
     sidebarLayout(
         
         sidebarPanel(

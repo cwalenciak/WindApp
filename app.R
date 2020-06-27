@@ -1,6 +1,3 @@
-library(here)
-
-
 setwd("D:/WindApp")
 
 source('global.R')

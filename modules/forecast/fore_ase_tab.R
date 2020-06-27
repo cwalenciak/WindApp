@@ -3,7 +3,7 @@ fore_ase_tab_ui <- function(id){
     ns <- NS(id)
     
     tabPanel(
-        "6: Windowed ASE",
+        "4: Windowed ASE",
         fluidRow(
             column(
                 width = 3,
@@ -125,13 +125,11 @@ fore_ase_tab_server <- function(input, output, session, dataset, test_dataset, e
             input$y_lower,
             input$y_upper
         )
-        # plot(f_ones, type = "l")
-        # lines(f_last)
+
     })
     
 }
 
-# mean(ase_arima_vect)
 
 
 
