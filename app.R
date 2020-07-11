@@ -1,4 +1,4 @@
-setwd("D:/WindApp")
+# setwd("D:/WindApp")
 
 source('global.R')
 
